@@ -23,14 +23,14 @@ def setup_logging():
 
     try:
         logging.basicConfig(
-            level=logging.INFO,
+            level=logging.DEBUG,  # Adjust logging level as needed
             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
             handlers=[
                 logging.FileHandler(log_file, mode='a', encoding='utf-8')
+                # Removed StreamHandler to disable terminal output
             ]
         )
         logger = logging.getLogger('WeatherStation')
-        # Add a test log entry to verify logging is working
         logger.info("Logging system initialized")
         return logger
     except Exception as e:
@@ -86,3 +86,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
