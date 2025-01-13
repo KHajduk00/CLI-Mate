@@ -1,15 +1,17 @@
-# Weather and Air Quality Logger
+# Weather Station Display
 
-This application fetches and displays current weather and air quality data for a specified city. It logs the data into a CSV file and provides a visual representation of the current time and weather conditions.
+A minimal terminal-based weather station display that shows current time, weather conditions, and air quality data for a specified city. Perfect for Linux rice setups and terminal customization.
 
 ## Features
 
-- Real-time display of current time in a 7-segment display format
-- Fetches and displays current weather data including temperature, humidity, pressure, visibility, wind speed, cloud coverage, and rainfall
-- Retrieves and shows air quality index (AQI) and detailed pollutant concentrations
-- Logs weather and air quality data to a CSV file hourly
-- Displays weather condition using ASCII art icons
-- Continuous updating of displayed information
+- Real-time display of current time in ASCII art format
+- Live weather information including:
+  - Temperature (color-coded based on warmth)
+  - Weather condition icon
+  - Humidity, pressure, and wind data
+- Air quality information with AQI and pollutant levels
+- Auto-updates every minute
+- Clean, terminal-friendly interface
 
 ## Requirements
 
@@ -47,25 +49,7 @@ Run the script using Python:
 python app.py
 ```
 
-The application will start displaying the current time and updating weather and air quality information every minute. Data is logged to a CSV file (named after your city) every hour.
-
-## CSV Output
-
-The application generates a CSV file named after your specified city (e.g., `YourCity.csv`). This file contains hourly logs of weather and air quality data, including:
-
-- Timestamp
-- Temperature
-- Feels like temperature
-- Humidity
-- Pressure
-- Visibility
-- Wind speed
-- Cloud coverage
-- Rainfall
-- Air Quality Index (AQI)
-- Concentrations of various pollutants (CO, NO, NO2, O3, SO2, PM2.5, PM10, NH3)
-
-This data can be used for further analysis or visualization using other tools.
+The application will start displaying the current time and updating weather and air quality information every minute. 
 
 ## Note
 
