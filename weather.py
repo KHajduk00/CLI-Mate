@@ -4,10 +4,15 @@ from ascii_art import Colors, get_ascii_weather_icon, generate_time_display
 from utilities import load_config, clear_screen, get_current_time
 
 class WeatherStation:
-    def __init__(self):
+    def __init__(self, city=None):
         config = load_config()
         self.api_key = config['API_KEY']
-        self.city = config['CITY']
+        # Use provided city if available, otherwise use config value
+        self.city = city if city else config['CITY']
+        self.update_weather_url()
+
+    def update_weather_url(self):
+        """Update the weather URL when city changes."""
         self.weather_url = f'http://api.openweathermap.org/data/2.5/weather?q={self.city}&appid={self.api_key}&units=metric'
 
     def format_weather_data(self, weather_data):
@@ -79,14 +84,14 @@ class WeatherStation:
             return ["Could not retrieve air quality data."]
 
         aqi_map = {
-            '1': "(Good)",
-            '2': "(Fair)",
-            '3': "(Moderate)",
-            '4': "(Poor)",
-            '5': "(Very Poor)"
+            1: "(Good)",
+            2: "(Fair)",
+            3: "(Moderate)",
+            4: "(Poor)",
+            5: "(Very Poor)"
         }
         
-        aqi_description = aqi_map.get(str(aqi_index), "(Unknown)")
+        aqi_description = aqi_map.get(aqi_index, "(Unknown)")
         lines = [
             f"\nAir Quality Index (AQI): {aqi_index} {aqi_description}",
             f"CO: {components['co']} μg/m³",
@@ -99,20 +104,32 @@ class WeatherStation:
             f"NH3: {components['nh3']} μg/m³"
         ]
         return lines
+    
+    def display_weather_dashboard(self, live_updates=True, update_interval=3600):  # default to 1 hour
+        """Display weather dashboard with optional continuous updates."""
+        last_weather_update = 0
+        weather_data = None
+        aqi_index = None
+        components = None
 
-    def display_weather_dashboard(self):
-        """Display weather dashboard with continuous updates."""
         while True:
-            clear_screen()
             current_time = get_current_time()
+            clear_screen()
 
             # Display time
             time_display = generate_time_display(current_time)
             for row in time_display:
                 print(Colors.BOLD + Colors.GREEN + row + Colors.RESET)
 
-            # Get and display weather data
-            weather_data = self.get_weather_data()
+            # Get and display weather data only if it's time to update
+            current_timestamp = time.time()
+            if weather_data is None or current_timestamp - last_weather_update >= update_interval:
+                weather_data = self.get_weather_data()
+                if weather_data:
+                    aqi_index, components = self.get_air_quality(weather_data['lat'], weather_data['lon'])
+                last_weather_update = current_timestamp
+
+            # Display the weather data
             if weather_data:
                 weather_icon = get_ascii_weather_icon(weather_data['weather_icon'])
                 print(f"\nWeather: {weather_icon}")
@@ -121,12 +138,15 @@ class WeatherStation:
                 for line in self.format_weather_data(weather_data):
                     print(line)
 
-                # Get and display air quality
-                aqi_index, components = self.get_air_quality(weather_data['lat'], weather_data['lon'])
+                # Display air quality
                 for line in self.format_air_quality_data(aqi_index, components):
                     print(line)
 
-            time.sleep(60)  # Update every minute
+            if not live_updates:
+                break
+
+            # Sleep until the next minute
+            time.sleep(60 - time.localtime().tm_sec)
 
 def main():
     weather_station = WeatherStation()

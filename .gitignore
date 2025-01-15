@@ -4,6 +4,8 @@ config.json
 # Ignore Python cache directories
 __pycache__/
 *.pyc
+*.py[cod]
+*$py.class
 
 # Ignore CSV logs (optional if you don't want to track logs)
 *.csv
@@ -12,6 +14,5 @@ __pycache__/
 .env/
 venv/
 
-# Ignore specific directories
-data/
-logs/
+# Ignore specific files
+ideas.md

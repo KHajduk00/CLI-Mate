@@ -21,10 +21,34 @@ A minimal terminal-based weather station display that shows current time, weathe
 
 ## Installation
 
-1. Clone this repository or download the script.
-2. Install the required Python library:
+1. Clone the repository:
 
-   ```
+  ```bash
+  git clone https://github.com/yourusername/CLI-Mate.git
+  cd CLI-Mate
+  ```
+
+2. Create your config file:
+
+  ```bash
+  cp config.json.example config.json
+  ```
+
+3. Edit config.json with your OpenWeatherMap API key and preferred city
+
+  ```bash
+  nano config.json
+  ```
+
+4. Run the installation script:
+
+  ```bash
+  ./install.sh
+  ```
+
+5. Install the required Python library:
+
+   ```bash
    pip install requests
    ```
 
@@ -43,13 +67,26 @@ Replace `"your_openweathermap_api_key_here"` with your actual OpenWeatherMap API
 
 ## Usage
 
-Run the script using Python:
+Once installed, you can use CLI-mate from anywhere with these commands:
 
 ```
-python app.py
+# Show current weather (single update)
+cli-mate
+
+# Enable live updates
+cli-mate -l
+
+# Change update interval to 30 seconds
+cli-mate -l -i 30
+
+# Check weather in a different city
+cli-mate -c "Paris"
+
+# Show help
+cli-mate -h
 ```
 
-The application will start displaying the current time and updating weather and air quality information every minute. 
+The application will start displaying the current time and updating weather and air quality information every hour when using cli-mate -l. 
 
 ## Note
 
