@@ -27,7 +27,7 @@ def parse_arguments():
     parser.add_argument('-i', '--interval', 
                        type=int,
                        default=3600,
-                       help='Weather update interval in seconds (default: 3600 - 1 hour). Clock updates every minute.')
+                       help='Weather data update interval in seconds (default: 3600 - 1 hour). Clock display updates every minute regardless of this setting.')
     parser.add_argument('-v', '--version', 
                        action='version',
                        version='%(prog)s 0.1.0')
